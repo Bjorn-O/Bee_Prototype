@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-
-    private int x, y;
+    [SerializeField]
+    private Vector2Int position;
     private GridManager gridMan;
-    // Start is called before the first frame update
+    [SerializeField]
+    private GameObject[] neighbours; //neighbours are organized in clockwise order, with 0 in the array being the top neighbour.
+    private bool occupied;
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
 
-    public void SetGridManager(GridManager grid, int xPos, int yPos)
+    public void SetGridManager(GridManager grid, Vector2Int position)
     {
         this.gridMan = grid;
-        this.x = xPos;
-        this.y = yPos;
+        this.position = position;
 
     }
-    
+    public void SetNeighbours(GameObject[] neighbouring)
+    {
+        this.neighbours = neighbouring;
+    }
+    public Vector2Int GetPosition()
+    {
+        return position;
+    }
+    public bool GetOccupied()
+    {
+        return occupied;
+    }
 }
