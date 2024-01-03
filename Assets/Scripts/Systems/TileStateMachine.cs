@@ -11,7 +11,8 @@ public class TileStateMachine : MonoBehaviour
     [SerializeField]
     private UIManager uiman;
     private Tile selectedTile;
-
+    [SerializeField]
+    private Camera cam;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -23,7 +24,7 @@ public class TileStateMachine : MonoBehaviour
     private void TileCheck()
     {
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity) && gridman.GetNearestTile(hit.point).GetComponent<Tile>() != null)
         {
             selectedTile = gridman.GetNearestTile(hit.point).GetComponent<Tile>();
