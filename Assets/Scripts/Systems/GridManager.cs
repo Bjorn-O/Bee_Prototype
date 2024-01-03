@@ -48,6 +48,7 @@ public class GridManager : MonoBehaviour
                 Vector3Int tileIndex = new Vector3Int(v, h, 0);
                 Tile instTile = Instantiate(tile, grid.CellToLocal(tileIndex), Quaternion.identity).GetComponent<Tile>();
                 instTile.SetGridManager(this, new Vector2Int(v,h));
+                instTile.gameObject.transform.parent = grid.gameObject.transform;
                 tiles[v, h] = instTile.gameObject; //throw the tile objects into the array. this should have the same index as the actual tile in the grid. testing still.
 
             }
