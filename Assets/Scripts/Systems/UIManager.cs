@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
        GameObject constr = Instantiate(constructionElement, position + offset,  Quaternion.identity);
         constr.transform.SetParent(worldSpace.gameObject.transform);
         constr.transform.Rotate(90, 0, 0);
+        constr.transform.position = position + offset;
     }
     
 }

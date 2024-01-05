@@ -33,10 +33,32 @@ public class GridManager : MonoBehaviour
         Debug.Log(pos.x + "," + pos.y);
         return tiles[pos.x, pos.y];
     }
-    public Vector3 SnapPosition(float x, float z)
+    public Vector3 SnapPosition(float x, float z, GridObject go)
     {
+        // translate the position into a vector3. then get the closest cell in the grid to it. Check if said cell is initialized. Then snap the object to it, and notify the tile that it is now occupied.
         Vector3 position = new Vector3(x, 0, z);
-        return grid.CellToLocal(grid.LocalToCell(position)); //there is something inherently hilarious about this line of code to me. getting the closest tile from a position, just to get the position from that tile.
+        Vector3Int cellPos = grid.LocalToCell(position);
+        if (tiles[cellPos.x, cellPos.y] != null)
+        {
+            SetTile(go, tiles[cellPos.x, cellPos.y].GetComponent<Tile>());
+            return grid.CellToLocal(grid.LocalToCell(position)); //there is something inherently hilarious about this line of code to me. getting the closest tile from a position, just to get the position from that tile.
+        }
+        else
+        {
+            return position;
+        }
+    }
+
+    private void SetTile(GridObject go, Tile t)
+    {
+        Tile currentTile = go.GetCurrentTile();
+        
+        if(currentTile != null)
+        {
+            currentTile.SetOccupied(false);
+        }
+        t.SetOccupied(true, go);
+        go.SetCurrentTile(t);
     }
 
     private void GenerateGrid()
@@ -49,7 +71,7 @@ public class GridManager : MonoBehaviour
                 Tile instTile = Instantiate(tile, grid.CellToLocal(tileIndex), Quaternion.identity).GetComponent<Tile>();
                 instTile.SetGridManager(this, new Vector2Int(v,h));
                 instTile.gameObject.transform.parent = grid.gameObject.transform;
-                tiles[v, h] = instTile.gameObject; //throw the tile objects into the array. this should have the same index as the actual tile in the grid. testing still.
+                tiles[v, h] = instTile.gameObject; //throw the tile objects into the array. this should have the same index as the actual tile in the grid.
 
             }
         }

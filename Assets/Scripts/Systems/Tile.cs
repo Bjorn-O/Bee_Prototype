@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private GameObject[] neighbours; //neighbours are organized in clockwise order, with 0 in the array being the top neighbour.
     private bool occupied;
+    private GridObject occupying;
     void Start()
     {
 
@@ -37,5 +38,14 @@ public class Tile : MonoBehaviour
     public bool GetOccupied()
     {
         return occupied;
+    }
+    public void SetOccupied(bool occupied, GridObject occupying = null)
+    {
+        this.occupied = occupied;  
+        this.occupying = occupying;
+    }
+    public GridObject GetOccupying()
+    {
+        return occupying;
     }
 }
