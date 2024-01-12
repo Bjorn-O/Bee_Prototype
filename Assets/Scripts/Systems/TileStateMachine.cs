@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileStateMachine : MonoBehaviour
@@ -97,10 +98,8 @@ public class TileStateMachine : MonoBehaviour
     }
     public GridManager GetCurrentGrid(float height)
     {
-        float overdiff = gridmanOverworld.gameObject.transform.position.y - height;
-        float hivediff = gridmanHive.gameObject.transform.position.y - height;
 
-        if (overdiff > hivediff)
+        if (gridmanOverworld.gameObject.transform.position.y  >= height)
             return gridmanHive;
         else
             return gridmanOverworld;

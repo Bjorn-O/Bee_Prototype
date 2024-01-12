@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -36,7 +37,7 @@ public class GridManager : MonoBehaviour
     public Vector3 SnapPosition(float x, float z, GridObject go)
     {
         // translate the position into a vector3. then get the closest cell in the grid to it. Check if said cell is initialized. Then snap the object to it, and notify the tile that it is now occupied.
-        Vector3 position = new Vector3(x, 0, z);
+        Vector3 position = new Vector3(x, this.transform.position.y, z);
         Vector3Int cellPos = grid.LocalToCell(position);
         if (tiles[cellPos.x, cellPos.y] != null)
         {
@@ -71,6 +72,8 @@ public class GridManager : MonoBehaviour
                 Tile instTile = Instantiate(tile, grid.CellToLocal(tileIndex), Quaternion.identity).GetComponent<Tile>();
                 instTile.SetGridManager(this, new Vector2Int(v,h));
                 instTile.gameObject.transform.parent = grid.gameObject.transform;
+                Transform trans = instTile.gameObject.transform;
+                trans.position = new Vector3(trans.position.x, this.gameObject.transform.position.y, trans.position.z);
                 tiles[v, h] = instTile.gameObject; //throw the tile objects into the array. this should have the same index as the actual tile in the grid.
 
             }
