@@ -56,7 +56,7 @@ public class GridObject : MonoBehaviour
     {
         Debug.Log("Didn't override the original function.");
         /*
-         * my intention for this function is for it to be overridden in any children, so that scripts only need a reference to the gridobject, to activate any Interaction.
+         * my intention for this function is for it to be overridden in any children, so that scripts only need a reference to the gridobject to activate any Interaction.
          */
     }
 }

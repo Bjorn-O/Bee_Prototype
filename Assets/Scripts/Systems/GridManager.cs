@@ -14,8 +14,19 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private int size;
     [SerializeField]
-    private GameObject tile;
+    private GameObject tile, timer;
     private GameObject[,] tiles;
+
+    /*
+     * 
+     * This script is to create and manage a grid. These grids in turn are managed by the tileStateMachine. 
+     * This script is to be placed on the same gameobject as the unity grid.
+     * the grid speaks for itself, size is the number of tiles in both the x and z dimensions. The tile gameobject will then be placed in every instantiated tile.
+     * these tiles will contain the data of itself, and references to its neighbours.
+     * then lastly, these tiles are put into a 2d array. The index of the array will be the same as the grid.localtocell return.
+     * 
+     * For size, anything above 100 will cause performance loss. as it is in all dimensions. 100x100 is already 10,000 tiles. But for now it seems to handle that fine. (should test on mobile though)
+     */
 
     private void Start()
     {
@@ -69,11 +80,14 @@ public class GridManager : MonoBehaviour
             for (int h = 0; h < size; h++)
             {
                 Vector3Int tileIndex = new Vector3Int(v, h, 0);
-                Tile instTile = Instantiate(tile, grid.CellToLocal(tileIndex), Quaternion.identity).GetComponent<Tile>();
-                instTile.SetGridManager(this, new Vector2Int(v,h));
+                Tile instTile = Instantiate(tile, grid.CellToLocal(tileIndex), Quaternion.identity).GetComponent<Tile>(); // instantiate tile.
+
+                instTile.SetGridManager(this, new Vector2Int(v,h)); //assign the gridmanager, and hand the tile its position. 
                 instTile.gameObject.transform.parent = grid.gameObject.transform;
                 Transform trans = instTile.gameObject.transform;
-                trans.position = new Vector3(trans.position.x, this.gameObject.transform.position.y, trans.position.z);
+
+                trans.position = new Vector3(trans.position.x, this.gameObject.transform.position.y, trans.position.z); //make sure the tiles are on the right y coordinates.
+
                 tiles[v, h] = instTile.gameObject; //throw the tile objects into the array. this should have the same index as the actual tile in the grid.
 
             }
@@ -127,4 +141,6 @@ public class GridManager : MonoBehaviour
             currentTile.SetNeighbours(currentNeighbours);
         }
     }
+
+
 }

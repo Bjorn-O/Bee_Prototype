@@ -42,7 +42,6 @@ public class TileStateMachine : MonoBehaviour
             uiman.TileStats(selectedTile);
             if (selectedTile.GetOccupied())
             {
-                
                 GridObject go = selectedTile.GetOccupying();
                 if (go.GetInteractable())
                 {
@@ -73,32 +72,24 @@ public class TileStateMachine : MonoBehaviour
     {
         return selectedTile;
     }
-
-    public void TempStartConstruction()
+    public void StartConstruction(GameObject tile, float time, GameObject constr = null,  bool both = false)
     {
-        StartConstruction(selectedTile, new Vector3(0, 0, 0));
-    }
-    public void StartConstruction(Tile tile, Vector3 offset, GameObject constr = null,  bool both = false)
-    {
-
-        Vector3 spawnPos = tile.gameObject.transform.position + offset;
-        construction.Add(tile);
+        construction.Add(tile.GetComponent<Tile>());
         if (constr != null)
         {
-            Instantiate(constr, spawnPos, Quaternion.identity);
             if (both)
             {
-                uiman.SpawnConstruction(spawnPos);
+                uiman.SpawnClearing(tile, time); //overloads to be added to allow a different model for construction.
             }
         }
         else
         {
-            uiman.SpawnConstruction(spawnPos);
+            uiman.SpawnClearing(tile, time); 
         }
     }
     public GridManager GetCurrentGrid(float height)
     {
-
+        //returns the grid that the object should be snapped to.
         if (gridmanOverworld.gameObject.transform.position.y  >= height)
             return gridmanHive;
         else
